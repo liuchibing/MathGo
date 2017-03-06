@@ -5,5 +5,5 @@ type ratInterpreter struct {
 }
 
 func (ri *ratInterpeter) Run(exp string) bool {
-
+	
 }
