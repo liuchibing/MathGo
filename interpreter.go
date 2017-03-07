@@ -6,3 +6,7 @@ package mathgo
 type Interpreter interface {
 	Run(exp string) bool
 }
+
+func NewInterpreter() Interpreter {
+	return newRatInterpreter()
+}
