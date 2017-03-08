@@ -4,9 +4,9 @@
 package mathgo
 
 type Interpreter interface {
-	Run(exp string) bool
+	Run(exp string) (MthExp, bool)
 }
 
-func NewInterpreter() Interpreter {
+func CreateInterpreter() Interpreter {
 	return newRatInterpreter()
 }
