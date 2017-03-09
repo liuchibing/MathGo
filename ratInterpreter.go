@@ -21,7 +21,7 @@ func (ri ratInterpreter) Run(exp string) (result MthExp, needNextLine bool) {
 	//判断是否有这个变量
 	item, hasVar := ri.vars[exp]
 	//判断是否可以转为数字
-	num, error := strconv.ParseFloat(exp, 64)
+	num, error := strconv.ParseFloat(strings.TrimSpace(exp), 64)
 	//解析表达式
 	switch {
 	case error == nil: //表达式是数值
@@ -63,6 +63,7 @@ func (ri ratInterpreter) handleFunc(sign []string) MthExp {
 			fmt.Print(" ")
 		}
 		fmt.Print("\n")
+		return nil
 	}
-	return sign
+	return nil
 }
