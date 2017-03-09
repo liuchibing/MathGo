@@ -3,6 +3,8 @@ package mathgo
 import (
 	"fmt"
 	"regexp"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -15,17 +17,25 @@ type ratInterpreter struct {
 	regSetVar, regRunFunc, regCalc *regexp.Regexp
 }
 
-func (ri ratInterpreter) Run(exp string) (MthExp, bool) {
+func (ri ratInterpreter) Run(exp string) (result MthExp, needNextLine bool) {
+	//判断是否有这个变量
+	item, hasVar := ri.vars[exp]
+	//判断是否可以转为数字
+	num, error := strconv.ParseFloat(exp, 64)
+	//解析表达式
 	switch {
+	case error == nil: //表达式是数值
+		return num, false
+	case hasVar: //表达式是变量名
+		return item, false
 	case ri.regSetVar.MatchString(exp): //创建变量
 		matches := ri.regSetVar.FindStringSubmatch(exp)
-		fmt.Println(matches)
-		ri.vars[matches[1]] = matches[2]
-		return matches[2], false
+		ri.vars[matches[1]], _ = ri.Run(matches[2])
+		return ri.vars[matches[1]], false
 	case ri.regRunFunc.MatchString(exp): //执行函数
 		matches := ri.regRunFunc.FindStringSubmatch(exp)
-		ri.handleFunc(matches)
-		fmt.Println(matches)
+		res := ri.handleFunc(matches)
+		return res, false
 	}
 	return nil, false
 }
@@ -42,5 +52,17 @@ func newRatInterpreter() ratInterpreter {
 }
 
 func (ri ratInterpreter) handleFunc(sign []string) MthExp {
-
+	//处理参数列表
+	args := strings.Split(sign[2], ",")
+	//筛选处理
+	switch sign[1] {
+	case "print":
+		for _, v := range args {
+			r, _ := ri.Run(v)
+			fmt.Print(r)
+			fmt.Print(" ")
+		}
+		fmt.Print("\n")
+	}
+	return sign
 }

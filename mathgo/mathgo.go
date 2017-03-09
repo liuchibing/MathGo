@@ -20,7 +20,13 @@ func main() {
 		if input == "exit\n" {
 			return
 		}
-		fmt.Println(inter.Run(input))
+
+		res, needNext := inter.Run(input)
+		if needNext {
+			continue
+		}
+
+		fmt.Println("=>", res)
 		fmt.Print(input)
 		fmt.Print("-->")
 	}
