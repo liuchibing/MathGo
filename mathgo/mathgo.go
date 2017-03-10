@@ -7,8 +7,10 @@ import (
 	"os"
 )
 
+const VERSION = 0.1
+
 func main() {
-	fmt.Println("Interactive-MathGo version 1.0")
+	fmt.Println("Interactive-MathGo version", VERSION)
 	inter := mathgo.CreateInterpreter()
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("-->")
