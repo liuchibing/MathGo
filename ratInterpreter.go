@@ -47,8 +47,9 @@ func (ri ratInterpreter) Run(exp string) (result MthExp, needNextLine bool) {
 	case ri.regCalc.MatchString(exp): //四则运算
 		matches := ri.regCalc.FindStringSubmatch(exp)
 		return matches, false
+	default:
+		return "error", false
 	}
-	return nil, false
 }
 
 func newRatInterpreter() ratInterpreter {
@@ -57,7 +58,7 @@ func newRatInterpreter() ratInterpreter {
 
 	ri.regSetVar = regexp.MustCompile("([^0-9][a-zA-Z0-9_]+)=([^=]+);?")
 	ri.regRunFunc = regexp.MustCompile("(.+)\\((.+)\\);?")
-	ri.regCalc = regexp.MustCompile("(.+)([\\+\\-\\*\\/\\^%])(.+);?")
+	ri.regCalc = regexp.MustCompile("(.+)([\\+\\-\\*/\\^%])(.+);?")
 
 	return ri
 }
