@@ -40,13 +40,13 @@ func (ri ratInterpreter) Run(exp string) (result MthExp, needNextLine bool) {
 		matches := ri.regSetVar.FindStringSubmatch(exp)
 		ri.vars[matches[1]], _ = ri.Run(matches[2])
 		return ri.vars[matches[1]], false
+	case ri.regCalc.MatchString(exp): //四则运算
+		matches := ri.regCalc.FindStringSubmatch(exp)
+		return matches, false
 	case ri.regRunFunc.MatchString(exp): //执行函数
 		matches := ri.regRunFunc.FindStringSubmatch(exp)
 		result := ri.handleFunc(matches)
 		return result, false
-	case ri.regCalc.MatchString(exp): //四则运算
-		matches := ri.regCalc.FindStringSubmatch(exp)
-		return matches, false
 	default:
 		return "error", false
 	}
@@ -57,15 +57,18 @@ func newRatInterpreter() ratInterpreter {
 	ri.vars = make(map[string]MthExp)
 
 	ri.regSetVar = regexp.MustCompile("([^0-9][a-zA-Z0-9_]+)=([^=]+);?")
-	ri.regRunFunc = regexp.MustCompile("(.+)\\((.+)\\);?")
-	ri.regCalc = regexp.MustCompile("(.+)([\\+\\-\\*/\\^%])(.+);?")
+	ri.regRunFunc = regexp.MustCompile("[^0-9][a-zA-Z0-9_]+\\((.+)\\);?")
+	ri.regCalc = regexp.MustCompile("(.+)([+\\-*^%])(.+);?")
 
 	return ri
 }
 
 func (ri ratInterpreter) handleFunc(sign []string) MthExp {
 	//处理参数列表
-	args := strings.Split(sign[2], ",")
+	var args []string
+	if strings.Contains(sign[2],",") {
+		args = strings.Split(sign[2], ",")
+	}
 	//筛选处理
 	switch sign[1] {
 	case "print":
