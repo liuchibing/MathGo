@@ -65,10 +65,9 @@ func newRatInterpreter() ratInterpreter {
 
 func (ri ratInterpreter) handleFunc(sign []string) MthExp {
 	//处理参数列表
-	var args []string
-	if strings.Contains(sign[2], ",") {
-		args = strings.Split(sign[2], ",")
-	}
+
+	args := strings.Split(sign[2], ",")
+
 	//筛选处理
 	switch sign[1] {
 	case "print":
