@@ -57,7 +57,7 @@ func newRatInterpreter() ratInterpreter {
 	ri.vars = make(map[string]MthExp)
 
 	ri.regSetVar = regexp.MustCompile("([^0-9][a-zA-Z0-9_]+)=([^=]+);?")
-	ri.regRunFunc = regexp.MustCompile("[^0-9][a-zA-Z0-9_]+\\((.+)\\);?")
+	ri.regRunFunc = regexp.MustCompile("([^0-9][a-zA-Z0-9_]+)\\((.+)\\);?")
 	ri.regCalc = regexp.MustCompile("(.+)([+\\-*^%])(.+);?")
 
 	return ri
@@ -66,7 +66,7 @@ func newRatInterpreter() ratInterpreter {
 func (ri ratInterpreter) handleFunc(sign []string) MthExp {
 	//处理参数列表
 	var args []string
-	if strings.Contains(sign[2],",") {
+	if strings.Contains(sign[2], ",") {
 		args = strings.Split(sign[2], ",")
 	}
 	//筛选处理
