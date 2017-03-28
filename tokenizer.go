@@ -19,6 +19,14 @@ func newTokenizer(reader *io.Reader) *tokenizer {
 
 func (t *tokenizer) getNext() (string, error) {
 	var breakchar rune = nil
+	var buf string = ""
 	for {
 		ch, err := t.input.ReadRune()
+		if err != nil {
+			return nil, err
+		}
+		switch ch {
+		case breakchar:
+			
+	}
 }
