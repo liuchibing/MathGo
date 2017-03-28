@@ -5,13 +5,26 @@ import (
 	"fmt"
 	"github.com/liuchibing/mathgo"
 	"os"
+	"flag"
 )
 
-const VERSION string = "0.1.2"
+const VERSION string = "0.2.0"
+
+//flags
+var fInteractive bool
+
+func init() {
+        //interactive
+        flag.BoolVar(&fInteractive, "interactive", false, "Enable interactive mode")
+        flag.BoolVar(&fInteractive, "i", false, "Enable interactive mode (shorthand)")
+}
 
 func main() {
-	fmt.Println("Interactive-MathGo version", VERSION)
-	inter := mathgo.CreateInterpreter()
+	flag.Parse()
+	if fInteractive {
+		fmt.Println("Interactive-MathGo version", VERSION)
+	}
+	inter := mathgo.NewInterpreter()
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("-->")
 	for {
